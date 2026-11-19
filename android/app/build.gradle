@@ -29,27 +29,24 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    namespace "ja.burhanrashid52.whattodo"
+    compileSdk flutter.compileSdkVersion
 
-    lintOptions {
+    lint {
         disable 'InvalidPackage'
     }
 
     defaultConfig {
         applicationId "ja.burhanrashid52.whattodo"
-        minSdkVersion 24 //flutter.minSdkVersion
-        targetSdkVersion 34
+        minSdk 24 //flutter.minSdkVersion
+        targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -92,10 +89,12 @@ android {
     }
 }
 
-flutter {
-    source '../..'
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 
-dependencies {
-    implementation 'com.android.support:support-annotations:28.0.0'
+flutter {
+    source '../..'
 }
