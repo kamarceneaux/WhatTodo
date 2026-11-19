@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
+import 'package:flutter_app/pages/home/forest_header.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/home/side_drawer.dart';
 import 'package:flutter_app/pages/tasks/add_task.dart';
@@ -52,20 +53,24 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         key: ValueKey(HomePageKeys.ADD_NEW_TASK_BUTTON),
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: Colors.orange,
+        tooltip: "Plant a task",
+        child: Icon(Icons.add),
         onPressed: () async {
           await context.adaptiveNavigate(SCREEN.ADD_TASK, AddTaskProvider());
           _taskBloc.refresh();
         },
       ),
       drawer: isWiderScreen ? null : SideDrawer(),
-      body: BlocProvider(
-        bloc: _taskBloc,
-        child: TasksPage(),
+      body: Column(
+        children: [
+          ForestHeader(progress: _taskBloc.forest),
+          Expanded(
+            child: BlocProvider(
+              bloc: _taskBloc,
+              child: TasksPage(),
+            ),
+          ),
+        ],
       ),
     );
   }

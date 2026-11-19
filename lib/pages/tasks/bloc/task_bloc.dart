@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
+import 'package:rxdart/rxdart.dart';
 
 class TaskBloc implements BlocBase {
   ///
@@ -16,6 +17,13 @@ class TaskBloc implements BlocBase {
 
   ///
   StreamController<int> _cmdController = StreamController<int>.broadcast();
+
+  /// How big the forest header should be: one tree per completed task, plus
+  /// how many tasks in the current view are still waiting to be "planted".
+  final BehaviorSubject<ForestProgress> _forestController =
+      BehaviorSubject<ForestProgress>();
+
+  Stream<ForestProgress> get forest => _forestController.stream;
 
   TaskDB _taskDb;
   late List<Tasks> _tasksList;
@@ -42,11 +50,22 @@ class TaskBloc implements BlocBase {
     if (!_taskController.isClosed) {
       _taskController.sink.add(UnmodifiableListView<Tasks>(_tasksList));
     }
+    _updateForest(toPlant: tasks.length);
+  }
+
+  void _updateForest({required int toPlant}) {
+    _taskDb.getTasks(taskStatus: TaskStatus.COMPLETE).then((completed) {
+      if (!_forestController.isClosed) {
+        _forestController
+            .add(ForestProgress(grown: completed.length, toPlant: toPlant));
+      }
+    });
   }
 
   void dispose() {
     _taskController.close();
     _cmdController.close();
+    _forestController.close();
   }
 
   void filterTodayTasks() {
@@ -143,6 +162,13 @@ class TaskBloc implements BlocBase {
     _lastFilterStatus = filter;
     refresh();
   }
+}
+
+class ForestProgress {
+  final int grown;
+  final int toPlant;
+
+  const ForestProgress({required this.grown, required this.toPlant});
 }
 
 enum FilterStatus { BY_TODAY, BY_WEEK, BY_PROJECT, BY_LABEL, BY_STATUS }

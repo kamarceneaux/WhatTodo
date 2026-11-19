@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 import 'package:flutter_app/utils/app_constant.dart';
 import 'package:flutter_app/utils/keys.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,9 +31,22 @@ class MessageInCenterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(_message,
-          key: ValueKey(HomePageKeys.MESSAGE_IN_CENTER),
-          style: TextStyle(fontSize: FONT_MEDIUM, color: Colors.black)),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.forest_outlined, size: 56, color: Forest.sage),
+          SizedBox(height: PADDING_SMALL),
+          Text(_message,
+              key: ValueKey(HomePageKeys.MESSAGE_IN_CENTER),
+              style: TextStyle(
+                  fontSize: FONT_MEDIUM,
+                  color: Forest.muted,
+                  fontWeight: FontWeight.w600)),
+          SizedBox(height: PADDING_VERY_SMALL),
+          Text("A quiet clearing. Tap + to plant something.",
+              style: TextStyle(fontSize: 13, color: Forest.muted)),
+        ],
+      ),
     );
   }
 }

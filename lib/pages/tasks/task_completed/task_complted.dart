@@ -4,6 +4,7 @@ import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/pages/tasks/task_db.dart';
 import 'package:flutter_app/pages/tasks/task_completed/row_task_completed.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 
 class TaskCompletedPage extends StatelessWidget {
   final TaskBloc _taskBloc = TaskBloc(TaskDB.get());
@@ -37,16 +38,17 @@ class TaskCompletedPage extends StatelessWidget {
                                     taskID, TaskStatus.PENDING);
                                 SnackBar snackbar =
                                     SnackBar(content: Text("Task Undo"));
-                                ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackbar);
                               }
                             },
                             secondaryBackground: Container(
-                              color: Colors.grey,
+                              color: Forest.sun,
                               child: Align(
                                 alignment: Alignment(0.95, 0.0),
                                 child: Text("UNDO",
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: Forest.pine,
                                         fontWeight: FontWeight.bold)),
                               ),
                             ),

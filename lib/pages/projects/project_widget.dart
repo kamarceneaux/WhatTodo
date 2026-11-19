@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/home/home_bloc.dart';
 import 'package:flutter_app/pages/projects/add_project.dart';
@@ -37,7 +38,7 @@ class ProjectExpansionTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       key: ValueKey(SideDrawerKeys.DRAWER_PROJECTS),
-      leading: Icon(Icons.book),
+      leading: Icon(Icons.park_outlined, color: Forest.moss),
       title: Text("Projects",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
       children: buildProjects(context),

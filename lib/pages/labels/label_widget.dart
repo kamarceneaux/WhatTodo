@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/pages/labels/label_db.dart';
@@ -37,7 +38,7 @@ class LabelExpansionTileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       key: ValueKey(SideDrawerKeys.DRAWER_LABELS),
-      leading: Icon(Icons.label),
+      leading: Icon(Icons.local_offer_outlined, color: Forest.moss),
       title: Text("Labels",
           style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
       children: buildLabels(context),

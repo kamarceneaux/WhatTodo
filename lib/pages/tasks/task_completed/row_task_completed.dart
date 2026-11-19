@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
 import 'package:flutter_app/utils/color_utils.dart';
 import 'package:flutter_app/utils/date_util.dart';
@@ -53,7 +54,7 @@ class TaskCompletedRow extends StatelessWidget {
                         Text(
                           getFormattedDate(tasks.dueDate),
                           style: TextStyle(
-                              color: Colors.grey, fontSize: FONT_SIZE_DATE),
+                              color: Forest.muted, fontSize: FONT_SIZE_DATE),
                           key: Key(dateLabel),
                         ),
                         Expanded(
@@ -65,7 +66,7 @@ class TaskCompletedRow extends StatelessWidget {
                                 children: <Widget>[
                                   Text(tasks.projectName!,
                                       style: TextStyle(
-                                          color: Colors.grey,
+                                          color: Forest.muted,
                                           fontSize: FONT_SIZE_LABEL)),
                                   Container(
                                     margin: const EdgeInsets.symmetric(
@@ -94,7 +95,7 @@ class TaskCompletedRow extends StatelessWidget {
             border: Border(
               bottom: BorderSide(
                 width: 0.5,
-                color: Colors.grey,
+                color: Forest.sage,
               ),
             ),
           ))

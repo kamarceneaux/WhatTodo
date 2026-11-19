@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 
-var priorityColor = [Colors.red, Colors.orange, Colors.yellow, Colors.white];
+/// Priority 1..4, from most to least urgent: berry, sunlight, moss, sage.
+const priorityColor = <Color>[
+  Forest.berry,
+  Forest.sun,
+  Forest.moss,
+  Forest.sage,
+];
 
 class ColorPalette {
   final String colorName;

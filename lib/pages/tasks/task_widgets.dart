@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/utils/forest_theme.dart';
 import 'package:flutter_app/pages/tasks/bloc/task_bloc.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
 import 'package:flutter_app/pages/tasks/models/tasks.dart';
@@ -43,7 +44,8 @@ class TasksPage extends StatelessWidget {
                             if (direction == DismissDirection.endToStart) {
                               _tasksBloc.updateStatus(
                                   taskID, TaskStatus.COMPLETE);
-                              message = "Task completed";
+                              message =
+                                  "Task completed. A new tree is growing!";
                             } else {
                               _tasksBloc.delete(taskID);
                               message = "Task deleted";
@@ -53,27 +55,57 @@ class TasksPage extends StatelessWidget {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackbar);
                           },
-                          background: Container(
-                            color: Colors.red,
-                            child: Align(
-                              alignment: Alignment(-0.95, 0.0),
-                              child: Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              ),
-                            ),
+                          background: _SwipeBackground(
+                            color: Forest.berry,
+                            icon: Icons.delete_outline,
+                            label: "Clear",
+                            alignStart: true,
                           ),
-                          secondaryBackground: Container(
-                            color: Colors.green,
-                            child: Align(
-                              alignment: Alignment(0.95, 0.0),
-                              child: Icon(Icons.check, color: Colors.white),
-                            ),
+                          secondaryBackground: _SwipeBackground(
+                            color: Forest.moss,
+                            icon: Icons.park,
+                            label: "Plant",
+                            alignStart: false,
                           ),
                           child: TaskRow(list[index])),
                     );
                   }),
             ),
+    );
+  }
+}
+
+class _SwipeBackground extends StatelessWidget {
+  final Color color;
+  final IconData icon;
+  final String label;
+  final bool alignStart;
+
+  const _SwipeBackground({
+    required this.color,
+    required this.icon,
+    required this.label,
+    required this.alignStart,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final content = <Widget>[
+      Icon(icon, color: Forest.parchment),
+      const SizedBox(width: 8),
+      Text(label,
+          style: const TextStyle(
+              color: Forest.parchment, fontWeight: FontWeight.w700)),
+    ];
+    return Container(
+      margin: taskCardMargin,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(color: color, borderRadius: taskCardRadius),
+      alignment: alignStart ? Alignment.centerLeft : Alignment.centerRight,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: alignStart ? content : content.reversed.toList(),
+      ),
     );
   }
 }

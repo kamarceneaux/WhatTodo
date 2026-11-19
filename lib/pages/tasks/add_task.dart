@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter_app/utils/forest_theme.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bloc/bloc_provider.dart';
@@ -53,7 +54,7 @@ class AddTaskScreen extends StatelessWidget {
           ),
           ListTile(
             key: ValueKey("addProject"),
-            leading: Icon(Icons.book),
+            leading: Icon(Icons.cabin_outlined),
             title: Text("Project"),
             subtitle: StreamBuilder<Project>(
               stream: createTaskBloc.selectedProject,
@@ -65,7 +66,7 @@ class AddTaskScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.calendar_today),
+            leading: Icon(Icons.wb_sunny_outlined),
             title: Text("Due Date"),
             subtitle: StreamBuilder<int>(
               stream: createTaskBloc.dueDateSelected,
@@ -78,7 +79,7 @@ class AddTaskScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.flag),
+            leading: Icon(Icons.eco_outlined),
             title: Text("Priority"),
             subtitle: StreamBuilder<Status>(
               stream: createTaskBloc.prioritySelected,
@@ -91,7 +92,7 @@ class AddTaskScreen extends StatelessWidget {
             },
           ),
           ListTile(
-              leading: Icon(Icons.label),
+              leading: Icon(Icons.local_offer_outlined),
               title: Text("Labels"),
               subtitle: StreamBuilder<String>(
                 stream: createTaskBloc.labelSelection,
@@ -102,7 +103,7 @@ class AddTaskScreen extends StatelessWidget {
                 _showLabelsDialog(context);
               }),
           ListTile(
-            leading: Icon(Icons.mode_comment),
+            leading: Icon(Icons.chat_bubble_outline),
             title: Text("Comments"),
             subtitle: Text("No Comments"),
             onTap: () {
@@ -110,7 +111,7 @@ class AddTaskScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.timer),
+            leading: Icon(Icons.notifications_none),
             title: Text("Reminder"),
             subtitle: Text("No Reminder"),
             onTap: () {
@@ -121,7 +122,7 @@ class AddTaskScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
           key: ValueKey(AddTaskKeys.ADD_TASK),
-          child: Icon(Icons.send, color: Colors.white),
+          child: Icon(Icons.park),
           onPressed: () async {
             if (_formState.currentState!.validate()) {
               _formState.currentState!.save();
@@ -269,8 +270,8 @@ class AddTaskScreen extends StatelessWidget {
         },
         child: Container(
             color: status == createTaskBloc.lastPrioritySelection
-                ? Colors.grey
-                : Colors.white,
+                ? Forest.mist
+                : Forest.parchment,
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 2.0),
               decoration: BoxDecoration(
