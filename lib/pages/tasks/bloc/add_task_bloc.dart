@@ -107,25 +107,27 @@ class AddTaskBloc implements BlocBase {
     lastPrioritySelection = priority;
   }
 
-  Stream createTask() {
-    return ZipStream.zip3(selectedProject, dueDateSelected, prioritySelected,
-        (Project project, int dueDateSelected, Status status) {
-      List<int> labelIds = [];
-      _selectedLabelList.forEach((label) {
-        labelIds.add(label.id!);
-      });
+  /// Saves the task. The returned future completes only after the database
+  /// write finishes, and completes with an error if the write fails, so the
+  /// caller can decide whether to close the screen.
+  Future<void> createTask() async {
+    final Project project = await selectedProject.first;
+    final int dueDate = await dueDateSelected.first;
+    final Status priority = await prioritySelected.first;
 
-      var task = Tasks.create(
-        title: updateTitle,
-        dueDate: dueDateSelected,
-        priority: status,
-        projectId: project.id!,
-      );
-
-      _taskDB.updateTask(task, labelIDs: labelIds).then((task) {
-        Notification.onDone();
-      });
+    List<int> labelIds = [];
+    _selectedLabelList.forEach((label) {
+      labelIds.add(label.id!);
     });
+
+    var task = Tasks.create(
+      title: updateTitle,
+      dueDate: dueDate,
+      priority: priority,
+      projectId: project.id!,
+    );
+
+    await _taskDB.updateTask(task, labelIDs: labelIds);
   }
 
   void updateDueDate(int millisecondsSinceEpoch) {

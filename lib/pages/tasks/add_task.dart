@@ -122,18 +122,26 @@ class AddTaskScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           key: ValueKey(AddTaskKeys.ADD_TASK),
           child: Icon(Icons.send, color: Colors.white),
-          onPressed: () {
+          onPressed: () async {
             if (_formState.currentState!.validate()) {
               _formState.currentState!.save();
-              createTaskBloc.createTask().listen((value) {
-                if (context.isWiderScreen()) {
-                  context
-                      .bloc<HomeBloc>()
-                      .applyFilter("Today", Filter.byToday());
-                } else {
-                  context.safePop();
+              try {
+                await createTaskBloc.createTask();
+              } catch (e) {
+                // Stay on this screen so the user doesn't lose what they typed.
+                if (context.mounted) {
+                  showSnackbar(
+                      context, "Couldn't save the task. Please try again.",
+                      materialColor: Colors.red);
                 }
-              });
+                return;
+              }
+              if (!context.mounted) return;
+              if (context.isWiderScreen()) {
+                context.bloc<HomeBloc>().applyFilter("Today", Filter.byToday());
+              } else {
+                context.safePop();
+              }
             }
           }),
     );

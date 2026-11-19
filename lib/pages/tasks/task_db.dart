@@ -107,9 +107,21 @@ class TaskDB {
   Future updateTask(Tasks task, {List<int>? labelIDs}) async {
     var db = await _appDatabase.getDb();
     await db.transaction((Transaction txn) async {
-      int id = await txn.rawInsert('INSERT OR REPLACE INTO '
+      // Values are bound as parameters so user text (e.g. a title containing
+      // a double quote) can't break the SQL statement.
+      int id = await txn.rawInsert(
+          'INSERT OR REPLACE INTO '
           '${Tasks.tblTask}(${Tasks.dbId},${Tasks.dbTitle},${Tasks.dbProjectID},${Tasks.dbComment},${Tasks.dbDueDate},${Tasks.dbPriority},${Tasks.dbStatus})'
-          ' VALUES(${task.id}, "${task.title}", ${task.projectId},"${task.comment}", ${task.dueDate},${task.priority.index},${task.tasksStatus!.index})');
+          ' VALUES(?, ?, ?, ?, ?, ?, ?)',
+          [
+            task.id,
+            task.title,
+            task.projectId,
+            task.comment,
+            task.dueDate,
+            task.priority.index,
+            task.tasksStatus!.index,
+          ]);
       if (id > 0 && labelIDs != null && labelIDs.length > 0) {
         labelIDs.forEach((labelId) {
           txn.rawInsert('INSERT OR REPLACE INTO '
